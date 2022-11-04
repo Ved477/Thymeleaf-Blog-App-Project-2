@@ -7,13 +7,14 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<div th:replace="admin/navbar :: navbar"></div>
+<div th:replace="~{admin/navbar :: navbar}"></div>
 
 <div class="container">
     <div class="row" >
         <div class="col-md-6">
         <h1>List Blog Posts</h1>
         </div>
+        <br />
         <div class="col-md-6" align="right">
             <div class="form-group">
                 <form class="form-group center-block" th:action="@{/admin/posts/search}">
@@ -40,7 +41,7 @@
             <td th:text="${postStat.count}">1</td>
             <td th:text="${post.title}">post title</td>
             <td th:text="${post.shortDescription}">post short description</td>
-            <td th:text="${post.createdOn}">post created date</td>
+            <td th:text="${#temporals.format(post.createdOn,'dd-MMM-yyyy')}">10 JUL 2022</td>
             <td><a th:href="@{/admin/posts/{postId}/edit(postId=${post.id})}" class="btn btn-primary">Edit</a>
                 <a th:href="@{/admin/posts/{postId}/delete(postId=${post.id})}" class="btn btn-danger">Delete</a>
                 <a th:href="@{/admin/posts/{postUrl}/view(postUrl=${post.url})}" class="btn btn-info">View</a>
@@ -51,6 +52,6 @@
 </div>
 <br/><br/>
 
-<div th:replace="admin/footer :: footer"></div>
+<div th:replace="~{admin/footer :: footer}"></div>
 </body>
 </html>

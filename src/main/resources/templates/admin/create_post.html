@@ -7,10 +7,9 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<div th:replace="admin/navbar :: navbar"></div>
+<div th:replace="~{admin/navbar :: navbar}"></div>
+<br/>
 <div class="container">
-    <br/>
-    <br/>
     <div class="card">
         <div class="card-header text-center"><h4>New Post</h4></div>
         <form method="post" th:action="@{/admin/posts}" th:object="${post}">
@@ -51,7 +50,7 @@
 </div>
 <br/>
 <br/>
-<div th:replace="admin/footer :: footer"></div>
+<div th:replace="~{admin/footer :: footer}"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
