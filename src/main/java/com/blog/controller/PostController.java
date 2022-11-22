@@ -1,7 +1,9 @@
 package com.blog.controller;
 
+import com.blog.dto.CommentDto;
 import com.blog.dto.PostDto;
 import com.blog.entities.Post;
+import com.blog.services.CommentService;
 import com.blog.services.PostService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -9,21 +11,30 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class PostController {
 
     private PostService postService;
 
-    public PostController(PostService postService) {
+    private CommentService commentService;
+
+    public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/admin/posts")
     public String posts(Model model){
         List<PostDto> posts = postService.findAllPosts();
-        model.addAttribute("posts", posts);
+        List<PostDto> sortedPosts = posts.stream()
+                .sorted(Comparator.comparing(PostDto :: getCreatedOn).reversed())
+                .collect(Collectors.toList());
+
+        model.addAttribute("posts", sortedPosts);
         return "/admin/posts";
     }
 
@@ -99,6 +110,21 @@ public class PostController {
         List<PostDto> posts = postService.searchPosts(query);
         model.addAttribute("posts", posts);
         return "/admin/posts";
+    }
+
+    @GetMapping("/admin/posts/comments")
+    public String getComments(Model model){
+        List<CommentDto> comments = commentService.getComments();
+        model.addAttribute("comments", comments);
+        return "/admin/comments";
+    }
+
+    @GetMapping("/admin/comments/{commentId}/delete")
+    public String deleteComment(@PathVariable("commentId") long commentId, Model model){
+        commentService.deleteComment(commentId);
+        List<CommentDto> comments = commentService.getComments();
+        model.addAttribute("comments", comments);
+        return "/admin/comments";
     }
 
 
